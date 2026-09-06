@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8f9fc">
+  <title>Processamento Digital de Imagens</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="slide-counter" id="slideCounter">1 / 11</div>
+  <button class="nav-arrow nav-prev" id="navPrev" aria-label="Anterior">&larr;</button>
+  <button class="nav-arrow nav-next" id="navNext" aria-label="Próximo">&rarr;</button>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu">&#9776;</button>
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head"><span>ÍNDICE</span><button class="sidebar-close" id="sidebarClose">&times;</button></div>
+    <ul class="sidebar-list" id="sidebarList"></ul>
+  </nav>
+
+  <div class="pipeline-indicator" id="pipelineIndicator">
+    <span class="pi-step" data-step="0">IMAGEM</span>
+    <span class="pi-dot"></span>
+    <span class="pi-step" data-step="1">ANÁLISE</span>
+    <span class="pi-dot"></span>
+    <span class="pi-step" data-step="2">MELHORIA</span>
+    <span class="pi-dot"></span>
+    <span class="pi-step" data-step="3">LIMPEZA</span>
+    <span class="pi-dot"></span>
+    <span class="pi-step" data-step="4">EXTRAÇÃO</span>
+    <span class="pi-dot"></span>
+    <span class="pi-step" data-step="5">INFORMAÇÃO</span>
+  </div>
+
+  <div class="presentation" id="presentation">
+
+    <!-- ======== SLIDE 1 — CAPA ======== -->
+    <section class="slide s-cover active" data-section="cover" data-pipeline="-1">
+      <div class="cover-grid">
+        <div class="cg-left">
+          <div class="cover-tag">PDI — 3ª APRESENTAÇÃO</div>
+          <h1 class="cover-title">Processamento<br>Digital de<br>Imagens</h1>
+          <div class="cover-rule"></div>
+          <p class="cover-subtitle">Histograma, Equalização,<br>Filtragem e Detecção de Bordas</p>
+          <div class="cover-authors">
+            <div class="ca-item"><span class="ca-num">01</span><span class="ca-name">Ana Beatriz</span><span class="ca-topic">Histograma</span></div>
+            <div class="ca-item"><span class="ca-num">02</span><span class="ca-name">Cindy Vitória</span><span class="ca-topic">Equalização</span></div>
+            <div class="ca-item"><span class="ca-num">03</span><span class="ca-name">Eduardo Marinho</span><span class="ca-topic">Filtragem</span></div>
+            <div class="ca-item"><span class="ca-num">04</span><span class="ca-name">Luis Jerônimo</span><span class="ca-topic">Bordas</span></div>
+            <div class="ca-item"><span class="ca-num">05</span><span class="ca-name">Paulo Sérgio</span><span class="ca-topic">Laplaciano & Aplicações</span></div>
+          </div>
+        </div>
+        <div class="cg-right">
+          <div class="cover-visual" id="coverVisual">
+            <div class="cv-flow">
+              <span class="cv-word" data-i="0">PIXELS</span>
+              <span class="cv-arrow">↓</span>
+              <span class="cv-word" data-i="1">ANÁLISE</span>
+              <span class="cv-arrow">↓</span>
+              <span class="cv-word" data-i="2">PROCESSAMENTO</span>
+              <span class="cv-arrow">↓</span>
+              <span class="cv-word" data-i="3">BORDAS</span>
+              <span class="cv-arrow">↓</span>
+              <span class="cv-word" data-i="4">INFORMAÇÃO</span>
+            </div>
+            <canvas id="coverCanvas" width="280" height="280"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SLIDE 2 — A JORNADA ======== -->
+    <section class="slide s-roadmap" data-section="roadmap" data-pipeline="-1">
+      <div class="slide-head">
+        <span class="slide-label">CONTEXTO</span>
+        <h2>Do Pixel à Informação</h2>
+        <p class="slide-desc">Agora que a imagem já foi transformada em uma matriz de valores digitais, o que podemos fazer com esses valores?</p>
+      </div>
+      <div class="rm-pipeline">
+        <div class="rm-node rm-active" data-pipeline="0">
+          <div class="rm-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
+          <strong>IMAGEM DIGITAL</strong>
+          <small>Matriz de pixels</small>
+        </div>
+        <span class="rm-arr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="rm-node" data-pipeline="1">
+          <div class="rm-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></div>
+          <strong>ANALISAR</strong>
+          <small>Histograma</small>
+        </div>
+        <span class="rm-arr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="rm-node" data-pipeline="2">
+          <div class="rm-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+          <strong>MELHORAR</strong>
+          <small>Equalização</small>
+        </div>
+        <span class="rm-arr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="rm-node" data-pipeline="3">
+          <div class="rm-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M15 9l-6 6M9 9l6 6"/></svg></div>
+          <strong>LIMPAR</strong>
+          <small>Filtragem</small>
+        </div>
+        <span class="rm-arr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="rm-node" data-pipeline="4">
+          <div class="rm-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"/><line x1="12" y1="22" x2="12" y2="15.5"/><polyline points="22,8.5 12,15.5 2,8.5"/></svg></div>
+          <strong>EXTRAIR</strong>
+          <small>Bordas</small>
+        </div>
+        <span class="rm-arr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="rm-node" data-pipeline="5">
+          <div class="rm-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+          <strong>INTERPRETAR</strong>
+          <small>Aplicações</small>
+        </div>
+      </div>
+      <div class="rm-context">
+        <div class="rm-block">
+          <h3>O que já sabemos</h3>
+          <p>Nas apresentações anteriores, vimos como uma imagem digital se forma por <strong>amostragem</strong> e <strong>quantização</strong>. Agora, com a imagem já digitalizada, partimos para a análise e o processamento.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SLIDE 3 — HISTOGRAMA ======== -->
+    <section class="slide s-hist" data-section="histogram" data-pipeline="1">
+      <div class="slide-head">
+        <span class="slide-label l-cyan">01 — ANA BEATRIZ</span>
+        <h2>Histograma de Imagens</h2>
+        <p class="slide-question">Como podemos entender uma imagem olhando apenas para seus números?</p>
+      </div>
+      <div class="hist-layout">
+        <div class="hl-left">
+          <div class="hl-block">
+            <h3>A imagem é uma matriz</h3>
+            <p>Cada célula representa um <strong>pixel</strong>. Cada número representa uma <strong>intensidade</strong>. O computador trabalha com valores — e o histograma resume como esses valores estão distribuídos.</p>
+          </div>
+          <div class="hl-block hl-accent">
+            <h3>Definição</h3>
+            <p>Contagem de pixels para cada nível de intensidade.</p>
+            <div class="hl-formula"><code>p(r&#8321;) = n&#8321; / (M &times; N)</code></div>
+            <div class="hl-kv"><span class="hl-sym">r&#8321;</span> intensidade (0–255)</div>
+            <div class="hl-kv"><span class="hl-sym">n&#8321;</span> quantidade de pixels</div>
+            <div class="hl-kv"><span class="hl-sym">M &times; N</span> total de pixels</div>
+          </div>
+        </div>
+        <div class="hl-right">
+          <div class="hl-demo">
+            <div class="hl-demo-col">
+              <span class="hl-demo-label">MATRIZ 5&times;5</span>
+              <div class="matrix-grid" id="matrixGrid"></div>
+              <p class="matrix-hint">Clique para alterar valores</p>
+            </div>
+            <span class="hl-demo-arrow">&rarr;</span>
+            <div class="hl-demo-col">
+              <span class="hl-demo-label">HISTOGRAMA</span>
+              <canvas id="matrixHistCanvas" width="180" height="120"></canvas>
+              <div class="hl-axis"><span>0</span><span>255</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SLIDE 4 — TIPOS DE HISTOGRAMA ======== -->
+    <section class="slide s-types" data-section="histogram-types" data-pipeline="1">
+      <div class="slide-head">
+        <span class="slide-label l-cyan">01 — ANA BEATRIZ</span>
+        <h2>O que o Histograma Revela?</h2>
+        <p class="slide-question">O que a distribuição dos pixels diz sobre a imagem?</p>
+      </div>
+      <div class="types-area">
+        <div class="types-tabs">
+          <button class="tt-btn active" data-type="dark">Escura</button>
+          <button class="tt-btn" data-type="bright">Clara</button>
+          <button class="tt-btn" data-type="low-contrast">Baixo Contraste</button>
+          <button class="tt-btn" data-type="high-contrast">Bom Contraste</button>
+        </div>
+        <div class="types-display">
+          <div class="td-box">
+            <span class="td-label">IMAGEM</span>
+            <canvas id="typesImageCanvas" width="200" height="200"></canvas>
+          </div>
+          <span class="td-arrow">&rarr;</span>
+          <div class="td-box">
+            <span class="td-label">HISTOGRAMA</span>
+            <canvas id="typesHistCanvas" width="320" height="160"></canvas>
+          </div>
+          <div class="td-info" id="typesInfo">
+            <h3>Escura</h3>
+            <p>Intensidades concentradas à esquerda. Tons escuros dominam a imagem.</p>
+          </div>
+        </div>
+      </div>
+      <div class="types-transition">
+        <p>Se o histograma revela que o contraste não está sendo bem utilizado, podemos tentar <strong>corrigir isso</strong>.</p>
+      </div>
+    </section>
+
+    <!-- ======== SLIDE 5 — EQUALIZAÇÃO ======== -->
+    <section class="slide s-eq" data-section="equalization" data-pipeline="2">
+      <div class="slide-head">
+        <span class="slide-label l-blue">02 — CINDY VITÓRIA</span>
+        <h2>Equalização de Histograma</h2>
+        <p class="slide-question">Se os pixels estão concentrados em uma faixa estreita, como podemos melhorar o contraste?</p>
+      </div>
+      <div class="eq-layout">
+        <div class="el-left">
+          <div class="el-step"><span class="els-n">A</span><div><h3>O problema</h3><p>Histograma concentrado em faixa estreita = <strong>baixo contraste</strong>. Pouca utilização da faixa 0–255.</p></div></div>
+          <div class="el-step el-accent"><span class="els-n">B</span><div><h3>A solução</h3><p>Redistribuir intensidades para obter histograma <strong>uniforme</strong>. Maior faixa dinâmica = melhor contraste.</p><div class="hl-formula"><code>s&#8321; = (L &minus; 1) &middot; &Sigma; p(r&#8340;)</code></div></div></div>
+          <div class="el-proscons">
+            <div class="ep green"><h4>Vantagens</h4><ul><li>Automático</li><li>Sem parâmetros manuais</li><li>Melhora faixa dinâmica</li></ul></div>
+            <div class="ep amber"><h4>Limitações</h4><ul><li>Amplifica ruído</li><li>Pode parecer artificial</li><li>Iluminação não uniforme &rarr; CLAHE</li></ul></div>
+          </div>
+        </div>
+        <div class="el-right">
+          <button class="btn-exec" id="btnRunEq">&#9654; Executar Equalização</button>
+          <div class="eq-pipeline">
+            <div class="eq-step highlight" id="eqStep1"><div class="eq-vis"><canvas id="eqImg1" width="100" height="100"></canvas></div><span>Original</span></div>
+            <span class="eq-arr">&rarr;</span>
+            <div class="eq-step" id="eqStep2"><div class="eq-vis"><canvas id="eqHist1" width="100" height="70"></canvas></div><span>Histograma</span></div>
+            <span class="eq-arr">&rarr;</span>
+            <div class="eq-step" id="eqStep3"><div class="eq-vis"><canvas id="eqCdf" width="100" height="70"></canvas></div><span>CDF</span></div>
+            <span class="eq-arr">&rarr;</span>
+            <div class="eq-step" id="eqStep4"><div class="eq-vis"><canvas id="eqHist2" width="100" height="70"></canvas></div><span>Equalizado</span></div>
+            <span class="eq-arr">&rarr;</span>
+            <div class="eq-step" id="eqStep5"><div class="eq-vis"><canvas id="eqImg2" width="100" height="100"></canvas></div><span>Resultado</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SLIDE 6 — FILTRAGEM ======== -->
+    <section class="slide s-filter" data-section="filtering" data-pipeline="3">
+      <div class="slide-head">
+        <span class="slide-label l-amber">03 — EDUARDO MARINHO</span>
+        <h2>Filtragem para Redução de Ruído</h2>
+        <p class="slide-question">Como remover ruído sem destruir a informação importante?</p>
+      </div>
+      <div class="fl-sources">
+        <div class="fl-src"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg> Sensores</div>
+        <div class="fl-src"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Transmissão</div>
+        <div class="fl-src"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> Iluminação</div>
+        <div class="fl-src"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> Processamento</div>
+      </div>
+      <div class="fl-toggle">
+        <button class="fl-tbtn active" data-filter="mean">Filtro da Média</button>
+        <button class="fl-tbtn" data-filter="median">Filtro da Mediana</button>
+      </div>
+      <div class="fl-content">
+        <div class="fl-panel active" id="panelMean">
+          <div class="fl-card">
+            <div class="fl-head"><h3>Filtro da Média</h3><span class="fl-badge amber">Suaviza</span></div>
+            <p>Substitui pixel pela <strong>média da vizinhança</strong> (kernel 3×3).</p>
+            <div class="hl-formula"><code>g(x,y) = (1/9) &middot; &Sigma; f(x+i, y+j)</code></div>
+            <div class="fl-card-body">
+              <div class="kernel-box">
+                <span class="kb-title">KERNEL 3&times;3</span>
+                <div class="kernel-grid" id="kernelGridMean"></div>
+              </div>
+              <div class="kb-animation">
+                <div class="kb-step" id="kbViz">
+                  <span class="kb-lbl">VIZINHANÇA</span>
+                  <canvas id="kernelVizCanvas" width="120" height="120"></canvas>
+                </div>
+                <span class="kb-arrow">&rarr;</span>
+                <div class="kb-step">
+                  <span class="kb-lbl">SOMA</span>
+                  <div class="kb-val" id="kbSum">—</div>
+                </div>
+                <span class="kb-arrow">&rarr;</span>
+                <div class="kb-step">
+                  <span class="kb-lbl">MÉDIA</span>
+                  <div class="kb-val highlight" id="kbMean">—</div>
+                </div>
+              </div>
+            </div>
+            <ul class="fl-tags"><li class="tg-ok">Suaviza ruído gaussiano</li><li class="tg-no">Borra bordas</li></ul>
+          </div>
+        </div>
+        <div class="fl-panel" id="panelMedian">
+          <div class="fl-card">
+            <div class="fl-head"><h3>Filtro da Mediana</h3><span class="fl-badge purple">Preserva</span></div>
+            <p>Substitui pixel pela <strong>mediana ordenada</strong> da vizinhança.</p>
+            <div class="median-box">
+              <div class="mb-row">
+                <span class="kb-lbl">VIZINHANÇA</span>
+                <div class="mb-grid" id="medianNeighborhood"></div>
+              </div>
+              <span class="mb-arrow">&darr; Ordenar</span>
+              <div class="mb-row">
+                <span class="kb-lbl">ORDENADA</span>
+                <div class="mb-grid" id="medianSorted"></div>
+              </div>
+              <span class="mb-arrow">&darr; Mediana</span>
+              <div class="mb-result" id="medianResultVal">&mdash;</div>
+            </div>
+            <ul class="fl-tags"><li class="tg-ok">Preserva bordas</li><li class="tg-ok">Eficaz contra ruído impulsivo</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="fl-compare" id="flCompare">
+        <div class="fl-cbox">
+          <span class="fl-chead">MÉDIA</span>
+          <p>Melhor para <strong>suavização geral</strong>. Borra bordas e detalhes.</p>
+        </div>
+        <div class="fl-cbox">
+          <span class="fl-chead">MEDIANA</span>
+          <p>Melhor contra <strong>ruído impulsivo</strong>. Preserva bordas.</p>
+        </div>
+      </div>
+      <div class="fl-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg> Filtrar <strong>antes</strong> de detectar bordas é essencial — ruído gera falsos positivos.</div>
+    </section>
+
+    <!-- ======== SLIDE 7 — DETECÇÃO DE BORDAS ======== -->
+    <section class="slide s-edge" data-section="edges" data-pipeline="4">
+      <div class="slide-head">
+        <span class="slide-label l-purple">04 — LUIS JERÔNIMO</span>
+        <h2>Detecção de Bordas</h2>
+        <p class="slide-question">Depois de limpar a imagem, como encontramos suas estruturas?</p>
+      </div>
+      <div class="ed-layout">
+        <div class="ed-left">
+          <div class="ed-block">
+            <h3>Gradiente</h3>
+            <p>Uma borda representa uma <strong>mudança significativa de intensidade</strong>. O gradiente mede essa taxa de variação.</p>
+            <div class="hl-formula"><code>|&nabla;f| = &radic;(Gx&sup2; + Gy&sup2;)</code></div>
+            <div class="ed-visual">
+              <div class="ed-bar"><div class="ed-dark"></div><div class="ed-light"></div></div>
+              <div class="ed-bar-labels"><span>Pequena mudança</span><span>Grande mudança</span></div>
+            </div>
+          </div>
+          <div class="ed-kernels">
+            <div class="ed-kbox"><h4>Gx — verticais</h4><div class="sk"><div class="skr"><span>-1</span><span>0</span><span>1</span></div><div class="skr"><span>-2</span><span>0</span><span>2</span></div><div class="skr"><span>-1</span><span>0</span><span>1</span></div></div></div>
+            <div class="ed-kbox"><h4>Gy — horizontais</h4><div class="sk"><div class="skr"><span>-1</span><span>-2</span><span>-1</span></div><div class="skr"><span>0</span><span>0</span><span>0</span></div><div class="skr"><span>1</span><span>2</span><span>1</span></div></div></div>
+          </div>
+          <div class="ed-sobel-viz">
+            <div class="sv-tabs">
+              <button class="sv-btn active" data-mode="original">Original</button>
+              <button class="sv-btn" data-mode="gx">Gx</button>
+              <button class="sv-btn" data-mode="gy">Gy</button>
+              <button class="sv-btn" data-mode="magnitude">Magnitude</button>
+            </div>
+            <canvas id="sobelCanvas" width="160" height="160"></canvas>
+          </div>
+        </div>
+        <div class="ed-right">
+          <div class="ed-canny">
+            <div class="ed-canny-head"><h3>Canny</h3><span class="fl-badge purple">5 etapas</span></div>
+            <div class="ed-cs">
+              <div class="ed-csi active" data-canny="0"><span>1</span><div><strong>Suavização</strong><small>Filtro Gaussiano</small></div></div>
+              <div class="ed-csi" data-canny="1"><span>2</span><div><strong>Gradiente</strong><small>Magnitude e direção</small></div></div>
+              <div class="ed-csi" data-canny="2"><span>3</span><div><strong>Supressão de Não Máximos</strong><small>Non-maximum suppression</small></div></div>
+              <div class="ed-csi" data-canny="3"><span>4</span><div><strong>Limiar Duplo</strong><small>Thresholding</small></div></div>
+              <div class="ed-csi" data-canny="4"><span>5</span><div><strong>Histerese</strong><small>Conexão de bordas</small></div></div>
+            </div>
+            <canvas id="cannyCanvas" width="200" height="200"></canvas>
+            <p class="canny-desc" id="cannyDesc">Suavização Gaussiana — reduz ruído antes do cálculo do gradiente.</p>
+          </div>
+          <table class="ed-tbl">
+            <thead><tr><th></th><th>Sobel</th><th>Canny</th></tr></thead>
+            <tbody><tr><td>Espessura</td><td>Grossa</td><td class="ok">Fina (1px)</td></tr><tr><td>Ruído</td><td class="no">Sensível</td><td class="ok">Robusto</td></tr><tr><td>Uso</td><td>Educacional</td><td class="ok">Produção</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SLIDE 8 — LAPLACIANO ======== -->
+    <section class="slide s-lap" data-section="laplacian" data-pipeline="4">
+      <div class="slide-head">
+        <span class="slide-label l-orange">05 — PAULO SÉRGIO</span>
+        <h2>Operador Laplaciano</h2>
+        <p class="slide-question">O que acontece quando analisamos mudanças usando a segunda derivada?</p>
+      </div>
+      <div class="lp-layout">
+        <div class="lp-derivs">
+          <div class="lp-d"><span class="lp-dbadge">1ª Derivada</span><h4>Sobel / Gradiente</h4><div class="hl-formula"><code>&part;f/&part;x &approx; f(x+1) &minus; f(x)</code></div><p>Detecta <strong>magnitude</strong> da mudança</p></div>
+          <div class="lp-vs">vs</div>
+          <div class="lp-d hl-accent"><span class="lp-dbadge">2ª Derivada</span><h4>Laplaciano</h4><div class="hl-formula"><code>&nabla;&sup2;f = &part;&sup2;f/&part;x&sup2; + &part;&sup2;f/&part;y&sup2;</code></div><p>Detecta <strong>troca de sinal</strong> (zero-crossing)</p></div>
+        </div>
+        <div class="lp-viz-area">
+          <div class="lp-viz-tabs">
+            <button class="lp-vbtn active" data-lap="original">Original</button>
+            <button class="lp-vbtn" data-lap="basic">Laplaciano Básico</button>
+            <button class="lp-vbtn" data-lap="diagonal">Com Diagonais</button>
+          </div>
+          <canvas id="lapCanvas" width="200" height="200"></canvas>
+        </div>
+        <div class="lp-bottom">
+          <div class="lp-kernels">
+            <div class="lp-kbox"><h4>Kernel Básico</h4><div class="sk"><div class="skr"><span>0</span><span>1</span><span>0</span></div><div class="skr"><span>1</span><span class="neg">&minus;4</span><span>1</span></div><div class="skr"><span>0</span><span>1</span><span>0</span></div></div></div>
+            <div class="lp-kbox"><h4>Com Diagonais</h4><div class="sk"><div class="skr"><span>1</span><span>1</span><span>1</span></div><div class="skr"><span>1</span><span class="neg">&minus;8</span><span>1</span></div><div class="skr"><span>1</span><span>1</span><span>1</span></div></div></div>
+          </div>
+          <div class="lp-warn"><span class="lp-wicon">&#9888;</span><div><h4>Sensibilidade ao ruído</h4><p>O Laplaciano amplifica <strong>toda</strong> variação. Solução: <strong>LoG = &nabla;&sup2;(G * f)</strong> — suavizar antes de derivar.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SLIDE 9 — PIPELINE & APLICAÇÕES ======== -->
+    <section class="slide s-pipe" data-section="pipeline" data-pipeline="5">
+      <div class="slide-head">
+        <span class="slide-label l-orange">05 — PAULO SÉRGIO</span>
+        <h2>Do Pixel à Aplicação</h2>
+      </div>
+      <div class="pipe-flow">
+        <div class="pf-node"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg><strong>Entrada</strong></div>
+        <span class="pf-arr"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="pf-node"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg><strong>Histograma</strong></div>
+        <span class="pf-arr"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="pf-node"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg><strong>Equalização</strong></div>
+        <span class="pf-arr"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="pf-node"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg><strong>Filtragem</strong></div>
+        <span class="pf-arr"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="pf-node"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"/><line x1="12" y1="22" x2="12" y2="15.5"/></svg><strong>Bordas</strong></div>
+        <span class="pf-arr"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <div class="pf-node pf-final"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><strong>Aplicação</strong></div>
+      </div>
+      <div class="apps-grid apps-full">
+        <div class="ag-item" data-app="cv"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Visão Computacional</div>
+        <div class="ag-item" data-app="obj"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/></svg> Reconhecimento de Objetos</div>
+        <div class="ag-item" data-app="ocr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg> OCR</div>
+        <div class="ag-item" data-app="sec"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Segurança</div>
+        <div class="ag-item" data-app="med"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Imagens Médicas</div>
+        <div class="ag-item" data-app="sat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg> Satélite</div>
+        <div class="ag-item" data-app="rob"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M12 2v5"/></svg> Robótica</div>
+        <div class="ag-item" data-app="car"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Veículos Autônomos</div>
+        <div class="ag-item" data-app="ml"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg> Machine Learning</div>
+        <div class="ag-item" data-app="ind"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20"/><path d="M5 20V8l7-4 7 4v12"/></svg> Inspeção Industrial</div>
+        <div class="ag-item" data-app="ar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3H3v18h18V3z"/><path d="M12 18v-6"/></svg> Realidade Aumentada</div>
+      </div>
+      <div class="app-detail" id="appDetail"></div>
+    </section>
+
+    <!-- (slide 10 — comparação removido) -->
+
+    <!-- ======== SLIDE 11 — CONCLUSÃO ======== -->
+    <section class="slide s-conc" data-section="conclusion" data-pipeline="-1">
+      <div class="slide-head">
+        <span class="slide-label l-red">CONCLUSÃO</span>
+        <h2>Como Tudo se Conecta?</h2>
+      </div>
+      <div class="conc-layout">
+        <div class="conc-left">
+          <div class="conc-qa">
+            <div class="conc-item">
+              <span class="conc-q">Como os pixels estão distribuídos?</span>
+              <span class="conc-a">&rarr; Histograma</span>
+            </div>
+            <div class="conc-item">
+              <span class="conc-q">Como melhorar o contraste?</span>
+              <span class="conc-a">&rarr; Equalização</span>
+            </div>
+            <div class="conc-item">
+              <span class="conc-q">Como reduzir ruído?</span>
+              <span class="conc-a">&rarr; Filtragem</span>
+            </div>
+            <div class="conc-item">
+              <span class="conc-q">Como encontrar estruturas?</span>
+              <span class="conc-a">&rarr; Bordas</span>
+            </div>
+            <div class="conc-item">
+              <span class="conc-q">Como transformar em informação?</span>
+              <span class="conc-a">&rarr; Aplicações</span>
+            </div>
+          </div>
+          <div class="conc-msg">
+            <p>Processamento digital de imagens não é apenas aplicar filtros. É escolher, em cada etapa, a transformação que melhor prepara a imagem para o próximo nível de interpretação.</p>
+            <div class="conc-equation">PIXELS + PROCESSAMENTO = INFORMAÇÃO</div>
+          </div>
+        </div>
+        <div class="conc-right">
+          <div class="conc-refs">
+            <h3>Referências</h3>
+            <div class="cr-item"><span class="cr-n">[1]</span><span>GONZALEZ; WOODS. <em>Digital Image Processing</em>. 4ª ed. Pearson, 2018.</span></div>
+            <div class="cr-item"><span class="cr-n">[2]</span><span>CANNY. A Computational Approach to Edge Detection. <em>IEEE PAMI</em>, 1986.</span></div>
+            <div class="cr-item"><span class="cr-n">[3]</span><span>SONKA; HLAVAC; BOYLE. <em>Image Processing &amp; Machine Vision</em>. Cengage, 2015.</span></div>
+            <div class="cr-item"><span class="cr-n">[4]</span><span>SANDARDZIC. <em>Python for Computer Vision</em>. Packt, 2019.</span></div>
+            <div class="cr-item"><span class="cr-n">[5]</span><span>BRADSKI; KAEHLER. <em>Learning OpenCV</em>. O'Reilly, 2008.</span></div>
+            <div class="cr-item"><span class="cr-n">[6]</span><span>OPENCV. Open Source Computer Vision Library. <em>docs.opencv.org</em>, 2024.</span></div>
+            <div class="cr-item"><span class="cr-n">[7]</span><span>MARR; HILDRETH. Theory of Edge Detection. <em>Proc. R. Soc. Lond. B</em>, 1980.</span></div>
+            <div class="cr-item"><span class="cr-n">[8]</span><span>PRATT. <em>Digital Image Processing</em>. 4ª ed. Wiley, 2007.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SLIDE 12 — ENCERRAMENTO ======== -->
+    <section class="slide s-end" data-section="end" data-pipeline="-1">
+      <div class="end-wrap">
+        <div class="end-rule"></div>
+        <h2>Obrigado!</h2>
+        <p>Perguntas?</p>
+        <div class="end-rule"></div>
+        <div class="end-authors">
+          <span>Ana Beatriz</span><span>&middot;</span>
+          <span>Cindy Vitória</span><span>&middot;</span>
+          <span>Eduardo Marinho</span><span>&middot;</span>
+          <span>Luis Jerônimo</span><span>&middot;</span>
+          <span>Paulo Sérgio</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="js/navigation.js"></script>
+  <script src="js/histogram.js"></script>
+  <script src="js/equalization.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/edges.js"></script>
+  <script src="js/laplacian.js"></script>
+  <script src="js/applications.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/presentation.js"></script>
+</body>
+</html>
