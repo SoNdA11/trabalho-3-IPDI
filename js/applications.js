@@ -18,7 +18,8 @@ var ApplicationsModule = (function () {
     car: { name: 'Veículos Autônomos', desc: 'Detecção de faixas, sinais e pedestres usa Sobel/Canny em tempo real.', stages: ['Sobel', 'Canny'] },
     ml:  { name: 'Machine Learning', desc: 'Pré-processamento com equalização e filtragem melhora acurácia de modelos.', stages: ['Equalização', 'Filtragem'] },
     ind: { name: 'Inspeção Industrial', desc: 'Detecção de defeitos em linhas de produção usa bordas e limpeza.', stages: ['Detecção de Bordas', 'Filtragem'] },
-    ar:  { name: 'Realidade Aumentada', desc: 'Sobreposição de informações virtuais requer detecção de bordas em tempo real.', stages: ['Detecção de Bordas', 'Filtragem'] }
+    ar:  { name: 'Realidade Aumentada', desc: 'Sobreposição de informações virtuais requer detecção de bordas em tempo real.', stages: ['Detecção de Bordas', 'Filtragem'] },
+    face:{ name: 'Reconhecimento Facial', desc: 'Identificação de pessoas usa extração de características faciais com equalização e detecção de bordas.', stages: ['Equalização', 'Detecção de Bordas'] }
   };
 
   function init() {
